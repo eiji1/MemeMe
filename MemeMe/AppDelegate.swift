@@ -3,7 +3,7 @@
 //  MemeMe
 //
 //  Created by eiji on 2015/05/04.
-//  Copyright (c) 2015年 Udacity. All rights reserved.
+//  Copyright (c) 2015 Udacity. All rights reserved.
 //
 
 import UIKit
@@ -13,7 +13,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	var window: UIWindow?
 
-
+	// shared meme data referred from every Meme view controllers
+	var memes = [Meme]()
+	
 	func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 		// Override point for customization after application launch.
 		return true
