@@ -14,14 +14,12 @@ class MemeTableViewController: UIViewController, UITableViewDataSource, UITableV
 	// shared application delegate to access the meme list
 	var sharedApp : AppDelegate!
 	
-	// a table view instance
 	@IBOutlet weak var tableView: UITableView!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		self.sharedApp = (UIApplication.sharedApplication().delegate as! AppDelegate)
-		self.tabBarController?.tabBar.hidden = false
 
 		// The first time a user launches the app, the meme editor view​ appears
 		if self.sharedApp.memes.count == 0 {
@@ -54,7 +52,7 @@ class MemeTableViewController: UIViewController, UITableViewDataSource, UITableV
 		let cell = tableView.dequeueReusableCellWithIdentifier("MemeCell") as? MemeTableViewCell
 		
 		let meme = sharedApp.memes[indexPath.row]
-		cell?.textLabel?.text = "\(meme.topText) \(meme.bottomText)"
+		cell?.textLabel?.text = "\(meme.topText)...\(meme.bottomText)"
 
 		// set memed image to the specified cell
 		let imageView:UIImageView! = cell?.imageView
@@ -72,31 +70,6 @@ class MemeTableViewController: UIViewController, UITableViewDataSource, UITableV
 		detailViewController.indexPath = indexPath
 		self.navigationController!.pushViewController(detailViewController, animated: true)
 	}
-	
-
-	/*
-	func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-
-		let cell = tableView.cellForRowAtIndexPath(indexPath) as! MemeTableViewCell
-		if cell.eraseButton.on == false {
-			return
-		}
-		//tableView.setEditing(true, animated: false)
-		if editingStyle == UITableViewCellEditingStyle.Delete {
-			
-			tableView.beginUpdates()
-			sharedApp.memes.removeAtIndex(indexPath.row)
-			cell.eraseButton.on = false
-			tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-			tableView.endUpdates()
-			tableView.reloadData()
-			
-			if sharedApp.memes.count == 0 {
-				self.navigationItem.leftBarButtonItem?.enabled = false
-			}
-		}
-	}
-	*/
 	
 	// methods to delete meme data
 	

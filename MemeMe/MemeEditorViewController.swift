@@ -11,9 +11,6 @@ import UIKit
 class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
 	UITextFieldDelegate
 {
-
-	// meme data to edit
-	var meme: Meme!
 	
 	// textfields
 	@IBOutlet weak var topTextField: UITextField!
@@ -212,40 +209,27 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
 	:returns: none
 	*/
 	@IBAction func shareMeme(sender: AnyObject) {
-		println("action")
-		
+
 		// generate the meme data
-		self.meme = Meme( topText: topTextField.text!,
+		let newMeme = Meme( topText: topTextField.text!,
 			bottomText: bottomTextField.text!,
 			image: self.imagePickerView.image, memedImage: generateMemedImage())
 		
 		// launch an activity view controller
-		let ativityViewController = UIActivityViewController(activityItems: [meme.memedImage], applicationActivities: nil)
+		let ativityViewController = UIActivityViewController(activityItems: [newMeme.memedImage], applicationActivities: nil)
 		// completion handler for the activity
 		ativityViewController.completionWithItemsHandler = {
 			(activityType, completed:Bool, returnedItems:Array!, error:NSError!) in
 			if (completed) {
-				self.saveMemeData()
+				// save new meme data to the shared application
+				let sharedApp = (UIApplication.sharedApplication().delegate as! AppDelegate)
+				sharedApp.memes.append(newMeme)
 				// dismiss this meme editor view and show sent memes view (table view) immediately
 				self.dismiss()
 			}
 		}
 		self.presentViewController(ativityViewController, animated: true, completion: nil)
 
-	}
-	
-	/**
-	save a meme data to the shared application
-	
-	:param: none
-	:returns: none
-	*/
-	func saveMemeData() {
-		// save new meme to the shared application
-		let sharedApp = (UIApplication.sharedApplication().delegate as! AppDelegate)
-		sharedApp.memes.append(self.meme)
-		
-		println(sharedApp.memes.count)
 	}
 	
 	/**
@@ -268,16 +252,16 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
 		let headerHeight = self.navigationBar.frame.height
 		let footerHeight = self.toolBar.frame.height
 		
-		let adjustedOrigin = CGPoint(x:self.view.frame.origin.x,
-			y:self.view.frame.origin.y - headerHeight)
-		let adjustedSize = CGSize(width:self.view.frame.width,
-			height:self.view.frame.height - (headerHeight + footerHeight))
+		let adjustedOrigin = CGPoint(x: self.view.frame.origin.x,
+			y: self.view.frame.origin.y - headerHeight)
+		let adjustedSize = CGSize(width: self.view.frame.width,
+			height: self.view.frame.height - (headerHeight + footerHeight))
 		
 		// trim part of snapshot image
 		UIGraphicsBeginImageContext(adjustedSize)
 		snapshotImage.drawAtPoint(adjustedOrigin)
-		let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()
-		UIGraphicsEndImageContext();
+		let memedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()
+		UIGraphicsEndImageContext()
 
 		return memedImage
 	}

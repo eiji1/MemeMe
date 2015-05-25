@@ -13,7 +13,6 @@ class MemeCollectionViewController: UIViewController, UICollectionViewDataSource
 	// shared application delegate to access the meme list
 	var sharedApp : AppDelegate!
 	
-	// collection view instance
 	@IBOutlet weak var collectionView: UICollectionView!
 	
 	override func viewDidLoad() {
@@ -32,9 +31,7 @@ class MemeCollectionViewController: UIViewController, UICollectionViewDataSource
 		else {
 			self.navigationItem.leftBarButtonItem?.enabled = true
 		}
-		
-		self.tabBarController?.tabBar.hidden = false
-		
+
 		// update collection view
 		self.collectionView.reloadData()
 	}

@@ -20,16 +20,20 @@ class MemeDetailViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		// disable default UI rendering process,
-		// if not inappropriate line will be drawn at the top of toolbar.
-		class CustomToolbar :UIToolbar{
-			private override func drawRect(rect: CGRect) {}
-		}
-		
+		// build edit and delete buttons on navigation bar
+
 		// create a toolbar
-		let toolbar = CustomToolbar(frame:CGRectMake(0,0,80,44))
+		
+		// UIToolbar draws gray border line at the top of the frame.
+		// To prevent drawing inappropriate line, use following custom class.
+		// This class disable to render original UI design.
+		class CustomToolbar : UIToolbar {
+			private override func drawRect(rect: CGRect) {
+				// do nothing 
+			}
+		}
+		let toolbar = CustomToolbar(frame: CGRectMake(0,0,80,44))
 		toolbar.autoresizingMask = UIViewAutoresizing.FlexibleHeight
-		toolbar.translucent = true
 		
 		// new bar button item including a toolbar
 		var toolbarButton = UIBarButtonItem(customView: toolbar)
@@ -42,16 +46,14 @@ class MemeDetailViewController: UIViewController {
 		let space = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
 		toolbar.setItems([deleteButton, space, space, editButton], animated: false)
 		
-		// locate the toolbar at the right end of navigation item bar.
+		// locate the toolbar at the right top of navigation item bar.
 		self.navigationItem.rightBarButtonItem = toolbarButton
 	}
 	
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
 
-		self.tabBarController?.tabBar.hidden = false
-		
-		// image view
+		// setup image view
 		self.imageView.contentMode = UIViewContentMode.ScaleAspectFit
 		self.imageView!.image = self.meme.memedImage
 		
